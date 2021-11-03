@@ -5,15 +5,18 @@ function Game(): JSX.Element {
   const [history, setHistory] = useState([{ squares: Array(9).fill(null) }]);
   const [stepNumber, setStepNumber] = useState(0);
   const [xIsNext, setXIsNext] = useState(true);
+  const [usedLocations, setUsedLocations] = useState<string[]>([]);
+  console.log(usedLocations);
 
   function handleClick(i: number) {
     const currentHistory = history.slice(0, stepNumber + 1);
-    //const currentStep = history[history.length - 1];
-    const squares = current.squares.slice();
+    const currentStep = history[history.length - 1];
+    const squares = currentStep.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
     squares[i] = xIsNext ? 'X' : 'O';
+    setLocation(i);
 
     setHistory(currentHistory.concat([{ squares: squares }]));
     setStepNumber(currentHistory.length);
@@ -25,14 +28,28 @@ function Game(): JSX.Element {
     setXIsNext(step % 2 === 0);
   }
 
+  function setLocation(i: number) {
+    const locations = ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3'];
+
+    const clickedLocations: string[] = usedLocations.slice();
+    const newLocations = [...clickedLocations, locations[i]];
+    setUsedLocations(newLocations);
+  }
+
   const current = history[stepNumber];
   const winner = calculateWinner(current.squares);
 
   const moves = history.map((_step, move) => {
     const desc = move ? 'Go to move #' + move : 'Go to game start';
+    console.log(move);
+    const position =
+      move === 0 ? '' : ` (Position: ${usedLocations[move - 1]})`;
     return (
       <li key={move}>
-        <button onClick={() => jumpTo(move)}>{desc}</button>
+        <button onClick={() => jumpTo(move)}>
+          {desc}
+          <span>{position}</span>
+        </button>
       </li>
     );
   });
@@ -57,7 +74,7 @@ function Game(): JSX.Element {
   );
 }
 
-function calculateWinner(squares: any[]) {
+function calculateWinner(squares: null[] | string[]) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],

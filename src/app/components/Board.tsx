@@ -2,7 +2,7 @@ import React from 'react';
 import Square from './Square';
 
 function Board(props: {
-  squares: any[];
+  squares: null[] | string[];
   onClick: (arg0: number) => unknown;
 }): JSX.Element {
   function renderSquare(i: number) {
