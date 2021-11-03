@@ -1,16 +1,16 @@
 import React from 'react';
 import Square from './Square';
 
-function Board(): JSX.Element {
+function Board(props: {
+  squares: any[];
+  onClick: (arg0: number) => unknown;
+}): JSX.Element {
   function renderSquare(i: number) {
-    return <Square />;
+    return <Square value={props.squares[i]} onClick={() => props.onClick(i)} />;
   }
-
-  const status = 'Next player: X';
 
   return (
     <div>
-      <div className="status">{status}</div>
       <div className="board-row">
         {renderSquare(0)}
         {renderSquare(1)}
