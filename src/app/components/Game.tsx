@@ -8,8 +8,8 @@ function Game(): JSX.Element {
 
   function handleClick(i: number) {
     const currentHistory = history.slice(0, stepNumber + 1);
-    //const currentStep = history[history.length - 1];
-    const squares = current.squares.slice();
+    const currentStep = history[history.length - 1];
+    const squares = currentStep.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
